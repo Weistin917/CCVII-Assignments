@@ -3,7 +3,7 @@ Operating System course's assingment which focuses on the architecture design fo
 ## Architecture design
 The project is organized in a three layer design with the following structure:
 ```
-Lab02-Calculator/
+002Calculadora/
 ├── assets/        <- Images used for demonstration
 ├── bin/           <- Generated compiled files from Make
 ├── lib/           <- Library level 
