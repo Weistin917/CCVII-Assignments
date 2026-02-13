@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "projectName",
+      "type": "pickString",
+      "description": "Project: ",
+      "options": [
+        "001HelloWorld_Qemu",
+        "002Calculadora",
+        "003InterruptHandler"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "make",
+      "args": [
+        "PROJECT=${input:projectName}",
+        "TARGET=qemu"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Run QEMU",
+      "type": "shell",
+      "command": "echo 'QEMU started'; qemu-system-arm -M versatilepb -nographic -s -S -kernel '${workspaceFolder}/${input:projectName}/bin/main.elf'",
+      "dependsOn": ["Build"],
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "QEMU started"
+          }
+        }
+      ]
+    }
+  ]
+}

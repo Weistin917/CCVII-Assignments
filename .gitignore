@@ -1,0 +1,5 @@
+# Ignore all PDFs
+*.pdf
+
+# Ignore all generated bin directories
+**/bin

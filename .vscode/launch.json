@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "inputs": [
+    {
+      "id": "projectName",
+      "type": "pickString",
+      "description": "Project: ",
+      "options": [
+        "001HelloWorld_Qemu",
+        "002Calculadora",
+        "003InterruptHandler"
+      ]
+    }
+  ],
+
+  "configurations": [
+    {
+      "name": "Debug ARM",
+      "type": "cortex-debug",
+      "request": "launch",
+
+      "servertype": "external",
+      "gdbTarget": "localhost:1234",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+
+      "executable": "${workspaceFolder}/${input:projectName}/bin/main.elf",
+      "cwd": "${workspaceFolder}",
+
+      "device": "ARMCM3",
+      "interface": "swd",
+
+      "runToEntryPoint": "main",
+      
+      "preLaunchTask": "Run QEMU"
+    }
+  ]
+}
