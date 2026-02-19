@@ -129,4 +129,65 @@ int child_process(int fd) {
 Output:  
 ![Output of Part 3](./assets/output3.png)
 ### Inter-process Communication Description
-The communication between processes can be achieved by using a pipe. The pipe is created using the syscall `pipe(int *fd)`, which puts the read and write file descriptors to the given array `fd`. The file descriptors acts as unique identifiers to the I/O resources, in this case the pipe. Afterwards, the parent process can use the write end of the pipe `fd[1]` to send the message, using the syscall `write()`. The children can receive the message using the syscall `read()` and the read end of the pipe `fd[0]`.
+The communication between processes can be achieved by using a pipe. The pipe is created using the syscall `pipe(int *fd)`, which puts the read and write file descriptors to the given array `fd`. The file descriptors acts as unique identifiers to the I/O resources, in this case the pipe. Afterwards, the parent process can use the write end of the pipe `fd[1]` to send the message, using the syscall `write()`. The children can receive the message using the syscall `read()` and the read end of the pipe `fd[0]`.  
+
+---
+## Part 4. Creating multiple child processes.
+Creating multiple child processes, all having the same parent, using a loop with `fork()`.
+```
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+
+#define   CHILD_PROCESSES   3
+
+int child_process(int child_id);
+
+int main(void) {
+  int i;
+  pid_t child_ids[CHILD_PROCESSES];
+  pid_t child_pid, current_pid = getpid();
+
+  printf("Parent Process: PID = %d\n", current_pid);
+  printf("Parent Process: Spawning children...\n");
+
+  for (i = 0; i < CHILD_PROCESSES; i++) {
+    child_pid = fork();
+
+    if (child_pid == -1) {
+      printf("Error creating children process. No process spawned. Terminating.\n");
+    } else if (!child_pid) {
+      // child_pid == 0, child process
+      child_process(i);
+      break;
+    } else {
+      // parent process, store the child pid
+      child_ids[i] = child_pid;
+    }
+  }
+
+  if (child_pid) {
+    for (i = 0; i < CHILD_PROCESSES; i++) {
+      // parent process wait for the children
+      waitpid(child_ids[i], NULL, 0);
+    }
+    printf("Parent Process: Children finished execution.\n");
+  }
+}
+
+/**
+ * A simple child process.
+ * @param child_id: child id number relative to the parent
+ * @return execution status of the child process
+ */
+int child_process(int child_id) {
+  pid_t current_pid = getpid();
+  pid_t parent_pid = getppid();
+  printf("Child %d: PID = %d, my parent PID = %d\n", child_id, current_pid, parent_pid);
+}
+```
+Output:  
+![Output of Part 4.](./assets/output4.png)
+### Multiple Process Creation Description
+Using `fork()` with a loop can create multiple child processes in a common parent process. Given that all the child are duplicated from the parent, the process verification steps need to be done each time. To prevent the parent from terminating before the children, `wait()` needs to be called after the creation. This could be achieved either by calling `wait()` the same number of times as the number of children created, or by storing the each `child_pid` then using `waitpid()`.
