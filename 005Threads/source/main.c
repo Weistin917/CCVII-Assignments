@@ -5,7 +5,7 @@
 
 #define     FILE_PATH     "/home/justin/Documents/Universidad Galileo/Ciclo 7/CC7/005Threads/access_1M.log"
 #define     NUM_THEADS    2
-#define     MULTITHREAD   1
+#define     MULTITHREAD   0
 
 void* process_log(void* args);
 int get_most_visited(char* most_visited);
