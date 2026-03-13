@@ -1,9 +1,10 @@
 #include    <pthread.h>
 #include    <string.h>
+#include    <time.h>
 #include    "log_processor.h"
 
-#define     FILE_PATH     "/home/justin/Documents/Universidad Galileo/Ciclo 7/CC7/005Threads/access.log"
-#define     NUM_THEADS    5
+#define     FILE_PATH     "/home/justin/Documents/Universidad Galileo/Ciclo 7/CC7/005Threads/access_1M.log"
+#define     NUM_THEADS    2
 #define     MULTITHREAD   1
 
 void* process_log(void* args);
@@ -107,6 +108,9 @@ int process_multithread() {
 }
 
 int main(void) {
+  clock_t start, end;
+  double cpu_time;
+
   file = fopen(FILE_PATH, "r");
   ip_requests = ht_create();
   url_visits = ht_create();
@@ -122,11 +126,17 @@ int main(void) {
 
   if (MULTITHREAD) {
     printf("Main: Running in multithread.\n");
+    start = clock();
     if (process_multithread()) return -1;
   } else {
     printf("Main: Running in single thread.\n");
+    start = clock();
     process_single_thread();
   }
+  end = clock();
+
+  cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
+  printf("CPU execution time: %f\n", cpu_time);
 
   printf("Total unique IPs: %d.\n", (int)ht_length(ip_requests));
   best_count = get_most_visited(most_visited_url);
