@@ -15,7 +15,7 @@ ifeq ($(TARGET), beagle)
 	CC			:= arm-none-eabi-gcc
 endif
 ifeq ($(TARGET), linux)
-	FLAGS		:=
+	FLAGS		:= $(LIB_SRCS) -pthread
 	CC			:= gcc
 endif
 
@@ -38,7 +38,7 @@ default: $(BIN)/main.elf
 $(BIN)/main.elf: save-project $(BIN) $(START) $(OBJS)
 ifeq ($(CC), gcc)
 	@echo "Linking object files..."
-	gcc $(OBJS) -o $(BIN)/main
+	gcc $(OBJS) $(FLAGS) -o $(BIN)/main
 	@echo "Program main built correctly."
 else
 	@echo "Linking object files..."
