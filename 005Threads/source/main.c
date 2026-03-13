@@ -2,11 +2,14 @@
 #include    <string.h>
 #include    "log_processor.h"
 
-#define     FILE_PATH   "/home/justin/Documents/Universidad Galileo/Ciclo 7/CC7/005Threads/access.log"
-#define     NUM_THEADS  5
+#define     FILE_PATH     "/home/justin/Documents/Universidad Galileo/Ciclo 7/CC7/005Threads/access.log"
+#define     NUM_THEADS    5
+#define     MULTITHREAD   1
 
 void* process_log(void* args);
 int get_most_visited(char* most_visited);
+int process_single_thread();
+int process_multithread();
 
 ht* ip_requests;
 ht* url_visits;
@@ -14,19 +17,19 @@ uint16_t errors;
 FILE* file;
 
 /**
- * Function that represents the job each thread will do.
+ * Function that represents the job each thread will do. 
  */
 void* process_log(void* args) {
-  char ip[15];
-  char url[15];
+  char ip[16];
+  char url[256];
   uint16_t status;
   
-  while (parse_log_entry(file, ip, url, &status)) {
-    count_ip_request(ip_requests, ip);
-    count_url_visits(url_visits, url);
+  while (parse_log_entry_multit(file, ip, url, &status)) {
+    count_ip_request_multit(ip_requests, ip);
+    count_url_visits_multit(url_visits, url);
     
-    if (status >= 400 & status < 600) 
-      count_errors(&errors);
+    if (status >= 400 && status < 600) 
+      count_errors_multit(&errors);
   }
 
   return NULL;
@@ -50,23 +53,33 @@ int get_most_visited(char* most_visited) {
   return best_count;
 }
 
-int main(void) {
-  ip_requests = ht_create();
-  url_visits = ht_create();
-  errors = 0;
-  file = fopen(FILE_PATH, "r");
+/**
+ * Function to process the log file as a single thread.
+ */
+int process_single_thread() {
+  char ip[16];
+  char url[256];
+  uint16_t status;
+
+  while (parse_log_entry(file, ip, url, &status)) {
+    count_ip_request(ip_requests, ip);
+    count_url_visits(url_visits, url);
+    
+    if (status >= 400 && status < 600) 
+      count_errors(&errors);
+  }
+
+  return 0;
+}
+
+/**
+ * Function to process the log file with multiple threads.
+ */
+int process_multithread() {
   semaphores_init();
 
   pthread_t threads[NUM_THEADS];
   int result_code;
-
-  char most_visited_url[15];
-  int best_count = 0;
-
-  if (file == NULL) {
-    printf("Failed to open file.\n");
-    return 1;
-  }
 
   printf("Creating %d threads to process log file...\n", NUM_THEADS);
   for (uint8_t i = 0; i < NUM_THEADS; i++) {
@@ -78,7 +91,7 @@ int main(void) {
     }
   }
 
-  printf("Main: Waiting for threads to finish...");
+  printf("Main: Waiting for threads to finish...\n");
 
   for (uint8_t i = 0; i < NUM_THEADS; i++) {
     result_code = pthread_join(threads[i], NULL);
@@ -88,13 +101,38 @@ int main(void) {
     }
     printf("Main: Thread %d has ended.\n", i);
   }
-
+  
   semaphores_clean();
-  ht_destroy(ip_requests);
-  ht_destroy(url_visits);
+  return 0;
+}
+
+int main(void) {
+  file = fopen(FILE_PATH, "r");
+  ip_requests = ht_create();
+  url_visits = ht_create();
+  errors = 0;
+  
+  if (file == NULL) {
+    printf("Failed to open file.\n");
+    return 1;
+  }
+  
+  char most_visited_url[256];
+  int best_count = 0;
+
+  if (MULTITHREAD) {
+    printf("Main: Running in multithread.\n");
+    if (process_multithread()) return -1;
+  } else {
+    printf("Main: Running in single thread.\n");
+    process_single_thread();
+  }
 
   printf("Total unique IPs: %d.\n", (int)ht_length(ip_requests));
   best_count = get_most_visited(most_visited_url);
   printf("Most Visited URL: %s (%d times).\n", most_visited_url, best_count);
   printf("HTTP Errors: %d.\n", errors);
+
+  ht_destroy(ip_requests);
+  ht_destroy(url_visits);
 }
