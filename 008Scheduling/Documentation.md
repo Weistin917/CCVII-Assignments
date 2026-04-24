@@ -6,7 +6,7 @@ A simulation of four CPU scheduling algorithms — FIFO, Round Robin, SJF, and S
 
 ```text
 008Scheduling/
-├── app/
+├── source/
 │   ├── main.c          # Entry point: thread generation, algorithm dispatch
 │   ├── output.c        # Terminal output, Gantt chart, log/stats file writing
 │   └── output.h
@@ -16,18 +16,17 @@ A simulation of four CPU scheduling algorithms — FIFO, Round Robin, SJF, and S
 ├── os/
 │   ├── scheduler.c     # FIFO, Round Robin, SJF, SRTF implementations
 │   └── scheduler.h     # thread_t, stats_t, gantt_t types and algorithm declarations
-├── out/                # Compiled object files and binary
-├── logs/
-│   ├── run.log         # Timestamped execution history (all algorithms)
-│   └── stats.log       # Statistics per algorithm
-└── Makefile
+├── bin/                # Compiled object files and binary
+└── logs/
+    ├── run.log         # Timestamped execution history (all algorithms)
+    └── stats.log       # Statistics per algorithm 
 ```
 
 ## Layered Architecture
 
 | Layer | Components | Responsibility |
 |---|---|---|
-| **Application** | `app/` | Thread generation, program flow, output formatting |
+| **Application** | `source/` | Thread generation, program flow, output formatting |
 | **Library** | `lib/` | Reusable utilities (random number generator) |
 | **OS** | `os/` | Scheduling logic — algorithm implementations and data structures |
 
@@ -71,14 +70,15 @@ Each `|` is colored by thread ID. Dots represent idle CPU time.
 
 ```bash
 # Build and run
-make run
+make run PROJECT=008Scheduling TARGET=linux
 
 # Build only
-make
+make PROJECT=008Scheduling TARGET=linux
 
 # Clean
-make clean
+make clean PROJECT=008Scheduling
 ```
+For more details, consult the README of the repository.
 
 ## Statistics Summary
 
