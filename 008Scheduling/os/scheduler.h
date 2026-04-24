@@ -41,9 +41,21 @@ typedef struct {
     int          count;
 } gantt_t;
 
-void scheduler_fifo (thread_t *threads, int n, stats_t *stats, gantt_t *gantt);
-void scheduler_rr   (thread_t *threads, int n, stats_t *stats, gantt_t *gantt);
-void scheduler_sjf  (thread_t *threads, int n, stats_t *stats, gantt_t *gantt);
-void scheduler_srtf (thread_t *threads, int n, stats_t *stats, gantt_t *gantt);
+/* Event Log for accurate preemption tracking */
+typedef struct {
+    int time;
+    int thread_id;
+    char message[64];
+} event_t;
+
+typedef struct {
+    event_t events[1024];
+    int count;
+} event_log_t;
+
+void scheduler_fifo (thread_t *threads, int n, stats_t *stats, gantt_t *gantt, event_log_t *elog);
+void scheduler_rr   (thread_t *threads, int n, stats_t *stats, gantt_t *gantt, event_log_t *elog);
+void scheduler_sjf  (thread_t *threads, int n, stats_t *stats, gantt_t *gantt, event_log_t *elog);
+void scheduler_srtf (thread_t *threads, int n, stats_t *stats, gantt_t *gantt, event_log_t *elog);
 
 #endif /* SCHEDULER_H */
