@@ -1,0 +1,80 @@
+--- FIFO Scheduling ---
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Arrived
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Started
+[Fri Mar 21 05:00:10 2025] Process 0 (Burst 9): Completed
+[Fri Mar 21 05:00:02 2025] Process 4 (Burst 7): Arrived
+[Fri Mar 21 05:00:10 2025] Process 4 (Burst 7): Arrived at 2, Started (waited 8.00 seconds)
+[Fri Mar 21 05:00:17 2025] Process 4 (Burst 7): Completed
+[Fri Mar 21 05:00:07 2025] Process 3 (Burst 2): Arrived
+[Fri Mar 21 05:00:17 2025] Process 3 (Burst 2): Arrived at 7, Started (waited 10.00 seconds)
+[Fri Mar 21 05:00:19 2025] Process 3 (Burst 2): Completed
+[Fri Mar 21 05:00:07 2025] Process 2 (Burst 10): Arrived
+[Fri Mar 21 05:00:19 2025] Process 2 (Burst 10): Arrived at 7, Started (waited 12.00 seconds)
+[Fri Mar 21 05:00:29 2025] Process 2 (Burst 10): Completed
+[Fri Mar 21 05:00:09 2025] Process 5 (Burst 1): Arrived
+[Fri Mar 21 05:00:29 2025] Process 5 (Burst 1): Arrived at 9, Started (waited 20.00 seconds)
+[Fri Mar 21 05:00:30 2025] Process 5 (Burst 1): Completed
+[Fri Mar 21 05:00:16 2025] Process 1 (Burst 10): Arrived
+[Fri Mar 21 05:00:30 2025] Process 1 (Burst 10): Arrived at 16, Started (waited 14.00 seconds)
+[Fri Mar 21 05:00:40 2025] Process 1 (Burst 10): Completed
+
+--- Round Robin Scheduling ---
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Arrived
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Arrived at 1, Started (waited 18.00 seconds)
+[Fri Mar 21 05:00:28 2025] Process 0 (Burst 9): Completed
+[Fri Mar 21 05:00:02 2025] Process 4 (Burst 7): Arrived
+[Fri Mar 21 05:00:03 2025] Process 4 (Burst 7): Arrived at 2, Started (waited 16.00 seconds)
+[Fri Mar 21 05:00:25 2025] Process 4 (Burst 7): Completed
+[Fri Mar 21 05:00:07 2025] Process 3 (Burst 2): Arrived
+[Fri Mar 21 05:00:09 2025] Process 3 (Burst 2): Arrived at 7, Started (waited 2.00 seconds)
+[Fri Mar 21 05:00:11 2025] Process 3 (Burst 2): Completed
+[Fri Mar 21 05:00:07 2025] Process 2 (Burst 10): Arrived
+[Fri Mar 21 05:00:11 2025] Process 2 (Burst 10): Arrived at 7, Started (waited 19.00 seconds)
+[Fri Mar 21 05:00:36 2025] Process 2 (Burst 10): Completed
+[Fri Mar 21 05:00:09 2025] Process 5 (Burst 1): Arrived
+[Fri Mar 21 05:00:15 2025] Process 5 (Burst 1): Arrived at 9, Started (waited 6.00 seconds)
+[Fri Mar 21 05:00:16 2025] Process 5 (Burst 1): Completed
+[Fri Mar 21 05:00:16 2025] Process 1 (Burst 10): Arrived
+[Fri Mar 21 05:00:22 2025] Process 1 (Burst 10): Arrived at 16, Started (waited 14.00 seconds)
+[Fri Mar 21 05:00:40 2025] Process 1 (Burst 10): Completed
+
+--- SJF Scheduling ---
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Arrived
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Started
+[Fri Mar 21 05:00:10 2025] Process 0 (Burst 9): Completed
+[Fri Mar 21 05:00:16 2025] Process 1 (Burst 10): Arrived
+[Fri Mar 21 05:00:20 2025] Process 1 (Burst 10): Arrived at 16, Started (waited 4.00 seconds)
+[Fri Mar 21 05:00:30 2025] Process 1 (Burst 10): Completed
+[Fri Mar 21 05:00:07 2025] Process 2 (Burst 10): Arrived
+[Fri Mar 21 05:00:30 2025] Process 2 (Burst 10): Arrived at 7, Started (waited 23.00 seconds)
+[Fri Mar 21 05:00:40 2025] Process 2 (Burst 10): Completed
+[Fri Mar 21 05:00:07 2025] Process 3 (Burst 2): Arrived
+[Fri Mar 21 05:00:11 2025] Process 3 (Burst 2): Arrived at 7, Started (waited 4.00 seconds)
+[Fri Mar 21 05:00:13 2025] Process 3 (Burst 2): Completed
+[Fri Mar 21 05:00:02 2025] Process 4 (Burst 7): Arrived
+[Fri Mar 21 05:00:13 2025] Process 4 (Burst 7): Arrived at 2, Started (waited 11.00 seconds)
+[Fri Mar 21 05:00:20 2025] Process 4 (Burst 7): Completed
+[Fri Mar 21 05:00:09 2025] Process 5 (Burst 1): Arrived
+[Fri Mar 21 05:00:10 2025] Process 5 (Burst 1): Arrived at 9, Started (waited 1.00 seconds)
+[Fri Mar 21 05:00:11 2025] Process 5 (Burst 1): Completed
+
+--- SRTF Scheduling ---
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Arrived
+[Fri Mar 21 05:00:01 2025] Process 0 (Burst 9): Arrived at 1, Started (waited 10.00 seconds)
+[Fri Mar 21 05:00:20 2025] Process 0 (Burst 9): Completed
+[Fri Mar 21 05:00:16 2025] Process 1 (Burst 10): Arrived
+[Fri Mar 21 05:00:20 2025] Process 1 (Burst 10): Arrived at 16, Started (waited 4.00 seconds)
+[Fri Mar 21 05:00:30 2025] Process 1 (Burst 10): Completed
+[Fri Mar 21 05:00:07 2025] Process 2 (Burst 10): Arrived
+[Fri Mar 21 05:00:30 2025] Process 2 (Burst 10): Arrived at 7, Started (waited 23.00 seconds)
+[Fri Mar 21 05:00:40 2025] Process 2 (Burst 10): Completed
+[Fri Mar 21 05:00:07 2025] Process 3 (Burst 2): Arrived
+[Fri Mar 21 05:00:07 2025] Process 3 (Burst 2): Started
+[Fri Mar 21 05:00:09 2025] Process 3 (Burst 2): Completed
+[Fri Mar 21 05:00:02 2025] Process 4 (Burst 7): Arrived
+[Fri Mar 21 05:00:02 2025] Process 4 (Burst 7): Arrived at 2, Started (waited 3.00 seconds)
+[Fri Mar 21 05:00:12 2025] Process 4 (Burst 7): Completed
+[Fri Mar 21 05:00:09 2025] Process 5 (Burst 1): Arrived
+[Fri Mar 21 05:00:09 2025] Process 5 (Burst 1): Started
+[Fri Mar 21 05:00:10 2025] Process 5 (Burst 1): Completed
+

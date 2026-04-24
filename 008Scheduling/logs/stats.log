@@ -1,0 +1,24 @@
+=== FIFO ===
+Waiting Times:    [0.00, 8.00, 10.00, 12.00, 20.00, 14.00]
+Avg Waiting Time: 10.67
+Turnaround Times: [9.00, 15.00, 12.00, 22.00, 21.00, 24.00]
+Avg Turnaround:   17.17
+
+=== Round Robin ===
+Waiting Times:    [18.00, 16.00, 2.00, 19.00, 6.00, 14.00]
+Avg Waiting Time: 12.50
+Turnaround Times: [27.00, 23.00, 4.00, 29.00, 7.00, 24.00]
+Avg Turnaround:   19.00
+
+=== SJF ===
+Waiting Times:    [0.00, 4.00, 23.00, 4.00, 11.00, 1.00]
+Avg Waiting Time: 7.17
+Turnaround Times: [9.00, 14.00, 33.00, 6.00, 18.00, 2.00]
+Avg Turnaround:   13.67
+
+=== SRTF ===
+Waiting Times:    [10.00, 4.00, 23.00, 0.00, 3.00, 0.00]
+Avg Waiting Time: 6.67
+Turnaround Times: [19.00, 14.00, 33.00, 2.00, 10.00, 1.00]
+Avg Turnaround:   13.17
+

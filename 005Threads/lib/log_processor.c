@@ -105,9 +105,7 @@ void count_ip_request_multit(ht* ip_requests, char *ip) {
     // Count doesn't exist for the given IP
     uint32_t *rcount = (uint32_t *)malloc(sizeof(uint32_t));
     *rcount = 1;
-    sem_post(ip_request_mutex);
-    // ip request mutex
-    sem_wait(ip_request_mutex);
+    
     ht_set(ip_requests, ip, rcount);
     sem_post(ip_request_mutex);    
   }
@@ -151,9 +149,7 @@ void count_url_visits_multit(ht* url_visits, char *url) {
     // Count doesn't exist for the given URL
     uint32_t *vcount = (uint32_t *)malloc(sizeof(uint32_t));
     *vcount = 1;
-    sem_post(url_visits_mutex);
-    // url visits mutex
-    sem_wait(url_visits_mutex);
+    
     ht_set(url_visits, url, vcount);
     sem_post(url_visits_mutex);
   }
