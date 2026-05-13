@@ -1,10 +1,18 @@
 #ifndef RAM_H_
 #define RAM_H_
 
-#define NUM_FRAMES  100
-#define FREE        0
-#define OCCUPIED    1
+#include <stdint.h>
 
-unsigned char frames[NUM_FRAMES] = {FREE};
+#define NUM_FRAMES      100
+#define FREE            0
+#define PREOCCUPIED     1
+#define OCCUPIED        2
+
+typedef struct frame {
+    uint8_t state;
+    uint8_t v_page;
+} frame;
+
+frame frames[NUM_FRAMES];
 
 #endif  /*RAM_H_*/

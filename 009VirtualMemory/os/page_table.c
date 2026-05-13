@@ -7,18 +7,17 @@
 #include <stdlib.h>
 
 typedef struct {
-    unsigned char vpn;
-    unsigned char pfn;
-    unsigned char valid;
+    uint8_t pfn;
+    uint8_t valid;
     // other flags
 } pt_entry;
 
 struct pt {
     pt_entry *entries;
-    unsigned char num_vpages;
+    uint8_t num_vpages;
 };
 
-pt* pt_create(unsigned char num_vpages) {
+pt* pt_create(uint8_t num_vpages) {
     pt* table = malloc(sizeof(pt));
     if (table == NULL) return NULL;
 
@@ -29,8 +28,20 @@ pt* pt_create(unsigned char num_vpages) {
         return NULL;
     }
 
-    for (unsigned char i = 0; i < num_vpages; i++) {
-        table->entries->vpn = i;
-    }
     return table;
+}
+
+void pt_destroy(pt* table) {
+    free(table->entries);
+    free(table);
+}
+
+int8_t pt_get_pfn(pt* table, uint8_t vpn) {
+    if (vpn > table->num_vpages) return -1;
+    return table->entries[vpn].pfn;
+}
+
+void pt_set_entry(pt* table, uint8_t vpn, uint8_t pfn) {
+    table->entries[vpn].pfn = pfn;
+    table->entries[vpn].valid = 1;
 }

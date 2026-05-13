@@ -1,6 +1,6 @@
 #include "random.h"
 
-static unsigned int _seed = 12345;
+static unsigned int _seed = 4951;
 
 /**
  * Seeds the random number generator.
