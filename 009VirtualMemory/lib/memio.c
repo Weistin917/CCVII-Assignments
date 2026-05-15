@@ -1,10 +1,3 @@
-/**
- * Memory input/output display
- * * RAM_init()
- * * RAM_map()
- * * summary()
- * * addr_translate()
- */
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -28,6 +21,10 @@ void summary(void);
 frame* current_ram_view;
 uint8_t num_frames;
 
+/**
+ * RAM initialization. Occupies a random amount of frames, then loads the process into the RAM.
+ * @param num_vpage: number of virtual pages of the process
+ */
 void RAM_init(uint8_t num_vpage) {
     num_frames = get_num_frames();
     current_ram_view = malloc(sizeof(frame) * num_frames);
@@ -52,11 +49,17 @@ void RAM_init(uint8_t num_vpage) {
     memory_printout();
 }
 
+/**
+ * Frees the RAM space.
+ */
 void RAM_free(void) {
     free(current_ram_view);
     ram_free();
 }
 
+/**
+ * Prints out information about the RAM.
+ */
 void memory_printout(void) {
     get_RAM_view(current_ram_view);
 
@@ -64,6 +67,9 @@ void memory_printout(void) {
     RAM_map();
 }
 
+/**
+ * Displays a graphical map of the RAM.
+ */
 void RAM_map(void) {
     // print memory map with colors
     char line[101];
@@ -84,6 +90,11 @@ void RAM_map(void) {
     printf("\\%s/\n", line);
 }
 
+/**
+ * Utility function to display a single frame block.
+ * @param frame_num: frame number
+ * @param block: the frame block structure
+ */
 void frame_display(uint8_t frame_num, frame block) {
     char content[5];
     switch (block.state) {
@@ -100,12 +111,19 @@ void frame_display(uint8_t frame_num, frame block) {
     printf("%s|%03d:%s|%s", STS_CLRS[block.state], frame_num, content, CLR_RST);
 }
 
+/**
+ * Get RAM summary: free frames and occupied frames.
+ */
 void summary(void) {
     uint8_t occ = occupied_count();
     
     printf("Free Frames: %d || Occupied Frames: %d\n", num_frames - occ, occ);
 }
 
+/**
+ * Displays the translation of a virtual address or error if address is out of range.
+ * @param v_addr: virtual address
+ */
 void addr_translate(uint16_t v_addr) {
     int16_t p_addr = translate(v_addr);
     if (p_addr == -1) {

@@ -24,6 +24,7 @@ typedef struct {
 } args;
 
 args parseArgs(int argc, char* argv[]);
+void batch_translate(char *file);
 
 /**
  * CLI arguments parsing
@@ -58,6 +59,10 @@ args parseArgs(int argc, char* argv[]) {
     return ret;
 }
 
+/**
+ * Translate a batch of virtual addresses inside the given file.
+ * @param file: string of the file name
+ */
 void batch_translate(char *file) {
     FILE *f = fopen(file, "r");
     char line[20];
