@@ -39,6 +39,10 @@ void ram_init(uint8_t num_vpage, uint8_t occ_count) {
     }
 }
 
+void ram_free(void) {
+    pt_destroy(table);
+}
+
 void get_RAM_view(frame* buffer) {
     memcpy(buffer, frames, NUM_FRAMES * sizeof(frame));
 }
