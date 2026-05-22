@@ -29,33 +29,36 @@ static const char *DISK_ART[] = {
 
 /* ── RAM view display ─────────────────────────────────────────────────────── */
 
+/* each cell "|NNN:NNN|" = 9 chars, outer "|" on each side = +2 */
+static void print_border(uint8_t row_frames, char open, char close) {
+    uint8_t width = row_frames * 9 + 2;
+    printf("%c", open);
+    for (uint8_t i = 0; i < width; i++) printf("-");
+    printf("%c\n", close);
+}
+
+static void print_row(frame *view, uint8_t from, uint8_t count,
+                      uint8_t highlight, uint8_t highlight_fi,
+                      const char *hl_color) {
+    printf("|");
+    for (uint8_t i = from; i < from + count; i++) {
+        if (highlight && i == highlight_fi) printf("%s", hl_color);
+        if (view[i] == FRAME_EMPTY) printf("|%03d:   |", i);
+        else                        printf("|%03d:%03d|", i, view[i]);
+        if (highlight && i == highlight_fi) printf("%s", CLR_RST);
+    }
+    printf("|\n");
+}
+
 static void print_ram(frame *view, uint8_t highlight, uint8_t highlight_fi,
                       const char *hl_color) {
     uint8_t cols = 10;
-    uint8_t width = cols * 10 + 2;
-
-    /* top border */
-    printf("/");
-    for (uint8_t i = 0; i < width; i++) printf("-");
-    printf("\\\n");
-
-    for (uint8_t i = 0; i < num_frames; i++) {
-        if (i % cols == 0) printf("|");
-        if (highlight && i == highlight_fi)
-            printf("%s", hl_color);
-        if (view[i] == FRAME_EMPTY)
-            printf("|%03d:   |", i);
-        else
-            printf("|%03d:%03d|", i, view[i]);
-        if (highlight && i == highlight_fi)
-            printf("%s", CLR_RST);
-        if (i % cols == cols - 1 || i == num_frames - 1)
-            printf("|\n");
+    for (uint8_t i = 0; i < num_frames; i += cols) {
+        uint8_t row = (num_frames - i < cols) ? num_frames - i : cols;
+        print_border(row, '/', '\\');
+        print_row(view, i, row, highlight, highlight_fi, hl_color);
+        print_border(row, '\\', '/');
     }
-
-    printf("\\");
-    for (uint8_t i = 0; i < width; i++) printf("-");
-    printf("/\n");
 }
 
 /* ── disk animation ───────────────────────────────────────────────────────── */
@@ -76,17 +79,11 @@ static void show_disk_transfer(frame *before, frame *after,
                                 uint8_t fi, uint8_t evicted, uint8_t loaded) {
     printf("\n" CLR_YELLOW "  [Page Fault — accessing disk...]" CLR_RST "\n\n");
 
-    /* before row — evicted frame in red */
+    /* before — evicted frame in red */
     printf("  Before:\n");
-    printf("  ");
-    for (uint8_t i = 0; i < num_frames && i < 4; i++) {
-        if (i == fi) printf(CLR_RED);
-        if (before[i] == FRAME_EMPTY) printf("|%03d:   |", i);
-        else printf("|%03d:%03d|", i, before[i]);
-        if (i == fi) printf(CLR_RST);
-    }
-    if (num_frames > 4) printf("...");
-    printf("\n");
+    print_border(num_frames < 4 ? num_frames : 4, '/', '\\');
+    print_row(before, 0, num_frames < 4 ? num_frames : 4, 1, fi, CLR_RED);
+    print_border(num_frames < 4 ? num_frames : 4, '\\', '/');
 
     /* arrow forward */
     printf("  ");
@@ -102,17 +99,12 @@ static void show_disk_transfer(frame *before, frame *after,
     printf("  ");
     animate_arrow(0);
 
-    /* after row — loaded frame in green */
+    /* after — loaded frame in green */
     printf("  After:\n");
-    printf("  ");
-    for (uint8_t i = 0; i < num_frames && i < 4; i++) {
-        if (i == fi) printf(CLR_GREEN);
-        if (after[i] == FRAME_EMPTY) printf("|%03d:   |", i);
-        else printf("|%03d:%03d|", i, after[i]);
-        if (i == fi) printf(CLR_RST);
-    }
-    if (num_frames > 4) printf("...");
-    printf("\n\n");
+    print_border(num_frames < 4 ? num_frames : 4, '/', '\\');
+    print_row(after, 0, num_frames < 4 ? num_frames : 4, 1, fi, CLR_GREEN);
+    print_border(num_frames < 4 ? num_frames : 4, '\\', '/');
+    printf("\n");
 }
 
 /* ── run one algorithm ────────────────────────────────────────────────────── */
@@ -137,6 +129,8 @@ static void run_one(const char *name, algo_fn fn) {
 
         RAM_get_view(after);
 
+        printf("\033[2J\033[H"); /* clear terminal */
+        printf(CLR_BOLD "  %s  — Step %d/%d\n" CLR_RST, name, i + 1, g_len);
         /* step header */
         printf("Step %3d | Page %3d | ", i + 1, page);
         if (r.hit) {
