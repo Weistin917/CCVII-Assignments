@@ -22,3 +22,4 @@ Consult `make help` for details.
 - [005Threads](005Threads/Documentation.md)
 - [008Scheduling](008Scheduling/Documentation.md)
 - [009VirtualMemory](009VirtualMemory/Documentation.md)
+- [010PageReplace](010PageReplace/Documentation.md)
