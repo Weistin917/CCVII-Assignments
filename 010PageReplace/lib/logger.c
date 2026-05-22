@@ -129,7 +129,6 @@ static void run_one(const char *name, algo_fn fn) {
 
         RAM_get_view(after);
 
-        printf("\033[2J\033[H"); /* clear terminal */
         printf(CLR_BOLD "  %s  — Step %d/%d\n" CLR_RST, name, i + 1, g_len);
         /* step header */
         printf("Step %3d | Page %3d | ", i + 1, page);
@@ -139,17 +138,18 @@ static void run_one(const char *name, algo_fn fn) {
         } else {
             printf(CLR_RED "MISS" CLR_RST);
             if (r.evicted != FRAME_EMPTY)
-                printf("  (evicted: %d)", r.evicted);
+            printf("  (evicted: %d)", r.evicted);
             printf("\n");
-
+            
             if (r.evicted != FRAME_EMPTY)
-                show_disk_transfer(before, after, r.frame_idx, r.evicted, r.loaded);
+            show_disk_transfer(before, after, r.frame_idx, r.evicted, r.loaded);
             else
-                print_ram(after, 1, r.frame_idx, CLR_GREEN);
+            print_ram(after, 1, r.frame_idx, CLR_GREEN);
         }
-
+        
         printf("Press Enter for next step...");
         while (getchar() != '\n');
+        printf("\033[2J\033[H"); /* clear terminal */
     }
 
     printf("\n" CLR_BOLD "Results — %s:" CLR_RST "\n", name);
@@ -157,6 +157,8 @@ static void run_one(const char *name, algo_fn fn) {
     printf("  Misses: %u\n", misses);
     printf("  Hit rate: %.2f%%\n\n",
            (hits + misses) ? 100.0 * hits / (hits + misses) : 0.0);
+    printf("Press Enter for next step...");
+    while (getchar() != '\n');
 }
 
 /* ── public API ───────────────────────────────────────────────────────────── */

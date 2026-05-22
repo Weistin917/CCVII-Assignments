@@ -97,5 +97,6 @@ int main(int argc, char *argv[]) {
     logger_init(a.num_frames, a.query, a.query_len);
     logger_run(a.algo);
     logger_free();
+    printf("Exiting...\n");
     return 0;
 }
